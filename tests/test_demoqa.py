@@ -16,7 +16,7 @@ def test_form():
     browser.element('.react-datepicker__day--030').click()
     browser.element('#subjectsInput').type('Arts').press_enter()
     browser.element('[for="hobbies-checkbox-2"]').click()
-    browser.element('#uploadPicture').send_keys(os.path.abspath('Gendolf.jpg'))
+    browser.element('#uploadPicture').send_keys(os.path.abspath('resources/Gendolf.jpg'))
     browser.element('#currentAddress').type('adress')
     browser.element('#currentAddress').perform(command.js.scroll_into_view).click()
     browser.element('#state').click().element(by.text('Haryana')).click()
