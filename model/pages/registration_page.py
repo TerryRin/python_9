@@ -33,7 +33,7 @@ class RegistationPage:
         browser.element('[for="hobbies-checkbox-2"]').click()  #
         self.up_picture.send_keys(os.path.abspath(f'resources/{user.upload_picture}'))
         self.current_address.type(user.current_address)
-        self.current_address.perform(command.js.scroll_into_view).click()
+        self.current_address.perform(command.js.scroll_into_view)
         self.state.click().type(user.state).click()
         self.city.click().type(user.city).click()
         self.submit.click()
