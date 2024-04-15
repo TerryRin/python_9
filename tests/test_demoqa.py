@@ -1,42 +1,28 @@
-from selene import browser, by, command, have
-import os.path
+from data.users import User
+from model.pages.registration_page import RegistationPage
 
 
 def test_form():
-    browser.open('/automation-practice-form')
-    # Заполнение формы
-    browser.element('#firstName').type('Gandalf')
-    browser.element('#lastName').type('Grey')
-    browser.element('#userEmail').type('gandalf@gmail.com')
-    browser.element('[for="gender-radio-1"]').click()
-    browser.element('#userNumber').type('1234567890')
-    browser.element('#dateOfBirthInput').click()
-    browser.element('.react-datepicker__month-select').click().element(by.text('March')).click()
-    browser.element('.react-datepicker__year-select').click().element(by.text('2024')).click()
-    browser.element('.react-datepicker__day--030').click()
-    browser.element('#subjectsInput').type('Arts').press_enter()
-    browser.element('[for="hobbies-checkbox-2"]').click()
-    browser.element('#uploadPicture').send_keys(os.path.abspath('Gendolf.jpg'))
-    browser.element('#currentAddress').type('adress')
-    browser.element('#currentAddress').perform(command.js.scroll_into_view).click()
-    browser.element('#state').click().element(by.text('Haryana')).click()
-    browser.element('#city').click().element(by.text('Karnal')).click()
-    browser.element('#submit').click()
-
-    # Проверка var1 - этот постоянно падает
-    browser.element('.modal-title').should(have.text('Thanks for submitting the form'))
-    browser.element('.table').all('td').even.should(
-        have.exact_texts(
-            'Gandalf Grey',
-            'gandalf@gmail.com',
-            'Male',
-            '1234567890',
-            '30 March,2024',
-            'Arts',
-            'Reading',
-            'Gendolf.jpg',
-            'adress',
-            'Haryana Karnal'
-        )
+    test_user = User(
+        first_name='Gandalf',
+        last_name='Grey',
+        email='gandalf@gmail.com',
+        user_gender='Male',
+        user_number='1234567890',
+        month='March',
+        year='2024',
+        day='30',
+        subjects_input='Arts',
+        hobbies='Reading',
+        upload_picture='Gendolf.jpg',
+        current_address='adress',
+        state='Haryana',
+        city='Karnal'
     )
-    browser.element('#closeLargeModal').perform(command.js.click)
+
+    registation_page = RegistationPage()
+    registation_page.open()
+    registation_page.user_registration(test_user)
+    registation_page.should_finish_form_title('Thanks for submitting the form')
+    registation_page.should_registered_user_with(test_user)
+    registation_page.close_large_modal()
