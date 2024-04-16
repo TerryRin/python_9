@@ -6,8 +6,8 @@ class User:
     first_name: str
     last_name: str
     email: str
-    user_gender: str
-    user_number: str
+    gender: str
+    number: str
     month: str
     year: str
     day: str

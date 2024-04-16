@@ -1,6 +1,6 @@
 import os
 
-from selene import command, have
+from selene import command, have, by
 from selene.support.shared import browser
 
 
@@ -23,19 +23,21 @@ class RegistationPage:
         self.first_name.type(user.first_name)
         self.last_name.type(user.last_name)
         self.user_email.type(user.email)
-        browser.element('[for="gender-radio-1"]').click()  #
-        self.user_number.type(user.user_number)
+        browser.element(by.text(user.gender)).perform(command.js.click)
+        self.user_number.type(user.number)
         self.date_of_birth.click()
         browser.element('.react-datepicker__month-select').type(user.month).click()
         browser.element('.react-datepicker__year-select').click().type(user.year).click()
         browser.element(f'.react-datepicker__day--0{user.day}').click()
         self.subjects_input.type(user.subjects_input).press_enter()
-        browser.element('[for="hobbies-checkbox-2"]').click()  #
+        browser.element(by.text(user.hobbies)).perform(command.js.click)
         self.up_picture.send_keys(os.path.abspath(f'resources/{user.upload_picture}'))
         self.current_address.type(user.current_address)
         self.current_address.perform(command.js.scroll_into_view)
-        self.state.click().type(user.state).click()
-        self.city.click().type(user.city).click()
+        self.state.click()
+        browser.element(by.text(user.state)).perform(command.js.click)
+        self.city.click()
+        browser.element(by.text(user.city)).perform(command.js.click)
         self.submit.click()
 
     def open(self):
@@ -47,16 +49,16 @@ class RegistationPage:
     def should_registered_user_with(self, user):
         browser.element('.table').all('td').even.should(
             have.exact_texts(
-                f'{user.first_name},{user.last_name}',
+                f'{user.first_name} {user.last_name}',
                 user.email,
-                user.user_gender,
-                user.user_number,
-                f'{user.year},{user.month},{user.day}',
+                user.gender,
+                user.number,
+                f'{user.day} {user.month},{user.year}',
                 user.subjects_input,
                 user.hobbies,
                 user.upload_picture,
                 user.current_address,
-                f'{user.state}, {user.city}'
+                f'{user.state} {user.city}'
             )
         )
 
