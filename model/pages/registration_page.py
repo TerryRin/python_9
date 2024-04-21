@@ -1,10 +1,9 @@
-import os
+from selene import browser, command, have, by
 
-from selene import command, have, by
-from selene.support.shared import browser
+from tests import resource
 
 
-class RegistationPage:
+class RegistrationPage:
     def __init__(self):
         self.first_name = browser.element('#firstName')
         self.last_name = browser.element('#lastName')
@@ -26,12 +25,12 @@ class RegistationPage:
         browser.element(by.text(user.gender)).perform(command.js.click)
         self.user_number.type(user.number)
         self.date_of_birth.click()
-        browser.element('.react-datepicker__month-select').type(user.month).click()
-        browser.element('.react-datepicker__year-select').click().type(user.year).click()
-        browser.element(f'.react-datepicker__day--0{user.day}').click()
+        browser.element('.react-datepicker__month-select').type(user.month)
+        browser.element('.react-datepicker__year-select').type(user.year)
+        browser.element(f'.react-datepicker__day--0{user.day}').perform(command.js.click)
         self.subjects_input.type(user.subjects_input).press_enter()
         browser.element(by.text(user.hobbies)).perform(command.js.click)
-        self.up_picture.send_keys(os.path.abspath(f'resources/{user.upload_picture}'))
+        self.up_picture.set_value(resource.path(user.upload_picture))
         self.current_address.type(user.current_address)
         self.current_address.perform(command.js.scroll_into_view)
         self.state.click()
@@ -43,6 +42,7 @@ class RegistationPage:
     def open(self):
         browser.open('/automation-practice-form')
         return self
+
     def should_finish_form_title(self, value):
         browser.element('.modal-title').should(have.text(value))
 

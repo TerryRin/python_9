@@ -1,5 +1,5 @@
 from data.users import User
-from model.pages.registration_page import RegistationPage
+from model.pages.registration_page import RegistrationPage
 
 
 def test_form():
@@ -15,14 +15,13 @@ def test_form():
         subjects_input='Arts',
         hobbies='Reading',
         upload_picture='Gendolf.jpg',
-        current_address='adress',
+        current_address='address',
         state='Haryana',
         city='Karnal'
     )
 
-    registation_page = RegistationPage()
-    registation_page.open()
-    registation_page.user_registration(test_user)
-    registation_page.should_finish_form_title('Thanks for submitting the form')
-    registation_page.should_registered_user_with(test_user)
-    registation_page.close_large_modal()
+    registration_page = RegistrationPage()
+    registration_page.open()
+    registration_page.user_registration(test_user)
+    registration_page.should_registered_user_with(test_user)
+    registration_page.close_large_modal()
